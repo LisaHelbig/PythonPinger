@@ -16,7 +16,7 @@ def checksum(string):
     count = 0
 
     while count < countTo:
-        thisVal = (count + 1) * 256 + (count)
+        thisVal = ord(string[count + 1]) * 256 + ord(string[count])
         csum += thisVal
         csum &= 0xffffffff
         count += 2
@@ -52,7 +52,10 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
         # Fetch the ICMP header from the IP packet
         icmpHeader = recPacket[20:28]
-
+        type, code, checksum, packetID, sequence = struct.unpack(
+            "bbHHh", icmpHeader
+        )
+        #rint(type, code, checksum, packetID, sequence)
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
         #print(timeLeft)
@@ -125,6 +128,7 @@ def ping(host, timeout=1):
     packet_max = stdev_var[3]
     packet_avg = packet_sum / 4
     vars = [round(packet_min, 2), round(packet_avg, 2), round(packet_max, 2), round(stdev(stdev_var, packet_avg), 2)]
+    #print(vars)
     return vars
 
 
@@ -138,4 +142,4 @@ def stdev(array, avg):
 
 
 if __name__ == '__main__':
-    ping("localhost")
+    ping("no.no.e")
