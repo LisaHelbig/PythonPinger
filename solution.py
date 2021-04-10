@@ -128,8 +128,10 @@ def ping(host, timeout=1):
 
 def stdev(array, avg):
     stdev = 0
+    holder = 0
     for i in array:
-        stdev += (i - avg)^2
+        holder = (i - avg)
+        stdev += (holder * holder)
     return math.sqrt(stdev/4)
 
 
