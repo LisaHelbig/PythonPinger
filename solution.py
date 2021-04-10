@@ -16,7 +16,7 @@ def checksum(string):
     count = 0
 
     while count < countTo:
-        thisVal = (string[count + 1]) * 256 + (string[count])
+        thisVal = (count + 1) * 256 + (count)
         csum += thisVal
         csum &= 0xffffffff
         count += 2
@@ -41,10 +41,11 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         startedSelect = time.time()
         whatReady = select.select([mySocket], [], [], timeLeft)
         howLongInSelect = (time.time() - startedSelect)
-        if whatReady[0] == []:  # Timeout
-            return "Request timed out."
+        #if whatReady[0] == []:  # Timeout
+        #    return "Request timed out."
 
         timeReceived = time.time()
+        #print(timeReceived)
         recPacket, addr = mySocket.recvfrom(1024)
 
         # Fill in start
@@ -54,8 +55,9 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
 
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
-        if timeLeft <= 0:
-            return "Request timed out."
+        #print(timeLeft)
+        #if timeLeft <= 0:
+        #    return "Request timed out."
         return timeLeft
 
 def sendOnePing(mySocket, destAddr, ID):
@@ -123,7 +125,6 @@ def ping(host, timeout=1):
     packet_max = stdev_var[3]
     packet_avg = packet_sum / 4
     vars = [round(packet_min, 2), round(packet_avg, 2), round(packet_max, 2), round(stdev(stdev_var, packet_avg), 2)]
-    print(vars)
     return vars
 
 
@@ -131,10 +132,10 @@ def stdev(array, avg):
     stdev = 0
     holder = 0
     for i in array:
-        holder = (i - avg)
+        holder = i - avg
         stdev += (holder * holder)
     return math.sqrt(stdev/4)
 
 
 if __name__ == '__main__':
-    ping("google.co.il")
+    ping("localhost")
