@@ -123,6 +123,7 @@ def ping(host, timeout=1):
     packet_max = stdev_var[3]
     packet_avg = packet_sum / 4
     vars = [round(packet_min, 2), round(packet_avg, 2), round(packet_max, 2), round(stdev(stdev_var, packet_avg), 2)]
+    print(vars)
     return vars
 
 
